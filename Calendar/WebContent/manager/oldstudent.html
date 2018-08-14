@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="../css/right.css">
+<style>
+#bgDiv {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background-color: black;
+	opacity: 0.2; /*设置不透明度，即可以看到层下面的内容，但是由于层的遮挡，背景是不可以进行操作的*/
+	display: none;
+}
+
+#fgDiv {
+	position: absolute;
+	width: 300px;
+	height: 130px;
+	border: 1px solid #666666;
+	background-color: #e7e7e7;
+	display: none;
+}
+</style>
+<script src='/Calendar/jquery-easyui-1.5.5.5/jquery.min.js'></script>
+<script>
+
+		$.ajax({
+			url : "http://132.230.104.158:8090/getOldstudent",
+			dataType : "jsonp",
+			async : false,
+			cache:false,
+			complete : function(data) {
+				data = data.responseJSON;
+				var result = JSON.stringify(data);
+				console.info(result);
+				$.each(data, function(index, obj) {
+					 $('<tr id="'+this.id+'">' +
+			                    '<td><input type="checkbox" id="asx"/></td>' +
+			                    '<td style="display:none;">'+this.id+'</td>'+
+			                    '<td>'+this.date+'</td>' +
+			                    '<td>'+this.school+'</td>' +
+			                    '<td><input type="button" id="btn_'+this.id+'" value="修改"/></td>' +
+			                    '</tr>').appendTo('#list');
+				});
+	            $('#list :button').click(function() {
+	            	//显示添加界面
+	                 $('#bgDiv').css('display', 'block')
+	                     .css('width', window.innerWidth + 'px')
+	                     .height(window.innerHeight + 'px');
+	                 $('#fgDiv').css('display', 'block')
+	                     .css('left', (window.innerWidth - 300) / 2 + 'px')
+	                     .css('top', (window.innerHeight - 100) / 2 + 'px');
+	                 //找到当前按钮所在td的之前的所有td，因为数据就在这些td中
+	                 var tds = $(this).parent().prevAll();
+	                 //设置文本框的值
+	                 $('#hidId').val(tds.eq(2).text());//用于存放修改行的id。并用于判别是添加操作还是修改。
+	                 $('#date').val(tds.eq(1).text());
+	                 $('#school').val(tds.eq(0).text());
+	            });
+			}
+		});
+        $(function () {
+        	
+            //为复选框chkAll设置点击事件，完成全选、全消的功能
+            $('#chkAll').click(function () {
+                //根据当前复选框的状态设置其它行复选框的状态
+                $('#list :checkbox').attr('checked', this.checked);
+            });
+            
+            //反选
+            $('#btnReverse').click(function () {
+                //获取实际数据行的复选框
+                $('#list :checkbox').each(function() {//jquery对象.each
+                    this.checked = !this.checked;
+                });
+            });
+            
+            //删除选中项
+            $('#btnRemove').click(function() {
+                //确认
+                if (confirm('确定要删除吗')) {
+                	$('#list :checked').parent().next().each(function(){
+                		console.info($(this).text());
+                		//发送ajax删除请求
+                        $.ajax({
+            				url : "http://132.230.104.158:8090/deleteOldstudent",
+            				data:{"oldstudent_id":$(this).text()},
+            				dataType : "jsonp",
+            				async: false,
+            		        cache:false,
+            				complete : function(data) {
+           					 	if(data.status==200){
+           			                console.info('----------------删除数据库成功------------------');
+           			         		//获取所有数据行中选中的checkbox
+           		                    //$('#list :checked').parent().parent().remove();
+           		                    //直接在祖宗节点中找到tr节点
+           		                    $('#list :checked').parents('tr').remove();
+           			             	alert("删除成功");
+           			            }else{
+           			                console.info('----- ----------删除数据库失败------------------');
+           			                alert("删除失败");
+           			            }
+            				}
+                    	});
+                	});
+                    
+                 }
+            });
+            
+            //添加
+            $('#btnAdd').click(function () {
+                //显示添加界面
+                $('#bgDiv').css('display', 'block')
+                    .css('width', window.innerWidth + 'px')
+                    .height(window.innerHeight + 'px');
+                $('#fgDiv').css('display', 'block')
+                    .css('left', (window.innerWidth - 300) / 2 + 'px')
+                    .css('top', (window.innerHeight - 100) / 2 + 'px');
+                //清除文本框中的数据
+                $('#fgDiv :text,:hidden').val('');
+            });
+ 
+            //保存
+            $('#btnSave').click(function () {
+            	
+                var id = $('#hidId').val();
+                //console.info('#' + id + '>td');
+                //构造一个worker对象出来并发送ajax请求进行添加
+                 if($('#date').val()==""||$('#school').val()==""){
+                	alert("字段不可为空");
+                }else{
+                	var oldstudent={
+                       		id:$('#hidId').val(),
+                       		date:$('#date').val(),
+                       		school:$('#school').val(),
+                       	}
+                        if (id == '') { //如果是添加
+                        	console.info(JSON.stringify(oldstudent));
+                        	$.ajax({
+                				url : "http://132.230.104.158:8090/insertOldstudent",
+                				data:{"data":JSON.stringify(oldstudent)},
+                				dataType : "jsonp",
+                				async: false,
+                		        cache:false,
+                				complete : function(data) {
+               					 	if(data.status==200){
+        	       					 	data = data.responseJSON;
+        	       					 	//获得新增行行的id
+        	       					 	result=data['result']//也可以data.result
+        	        					console.info(result);
+               			                console.info('----------------插入数据库成功------------------');
+               			            	
+               			                $('<tr id="' + result + '">' +
+                 	                        '<td><input type="checkbox"/></td>' +
+                 	                       '<td style="display:none;">' + result + '</td>' +
+                 	                        '<td>' + $('#date').val() + '</td>' +
+                 	                        '<td>' + $('#school').val() + '</td>' +
+                 	                        '<td><input type="button" class="div_btn" value="修改"/></td>' +
+                 	                        '</tr>').appendTo('#list')
+                 	                        .find(':button').click(function () {//为修改按钮绑定事件
+                 	                            //显示添加界面
+                 	                            $('#bgDiv').css('display', 'block')
+                 	                                .css('width', window.innerWidth + 'px')
+                 	                                .height(window.innerHeight + 'px');
+                 	                            $('#fgDiv').css('display', 'block')
+                 	                                .css('left', (window.innerWidth - 300) / 2 + 'px')
+                 	                                .css('top', (window.innerHeight - 100) / 2 + 'px');
+                 	                            //找到当前按钮所在td的之前的所有td，因为数据就在这些td中
+                 	                            var tds = $(this).parent().prevAll();
+                 	                            //设置文本框的值
+                 	                             $('#hidId').val(tds.eq(2).text());//用于存放修改行的id。并用于判别是添加操作还是修改。
+        						                 $('#date').val(tds.eq(1).text());
+        						                 $('#school').val(tds.eq(0).text());
+                 	                        });
+               			             	alert("插入成功");
+               			            }else{
+               			                console.info('----- ----------插入数据库失败------------------');
+               			                alert("插入失败");
+               			            }
+                				}
+                        	});
+                            
+                        } else {//否则是修改
+                            var tds = $('#' + id + '>td');
+                        	console.info('#' + id + '>td');
+                            console.info(JSON.stringify(oldstudent));
+                            $.ajax({
+                				url : "http://132.230.104.158:8090/updateOldstudent",
+                				data:{"data":JSON.stringify(oldstudent)},
+                				dataType : "jsonp",
+                				async: false,
+                		        cache:false,
+                				complete : function(data) {
+               					 	if(data.status==200){
+               			                console.info('----------------修改数据库成功------------------');
+
+        	                            //改tr的id属性，保持数据一致
+        	                            //$('#' + id).attr('id', $('#txtId').val());
+        	        					tds.eq(2).text($('#date').val());
+        	        	                tds.eq(3).text($('#school').val());
+               			             	alert("修改成功");
+               			            }else{
+               			                console.info('----- ----------修改数据库失败------------------');
+               			                alert("修改失败");
+               			            }
+                				}
+                        	});
+                        }
+                }
+ 
+                //隐藏层 隐藏起来。
+                $('#bgDiv').fadeOut();  //遮挡背景层(半透明)
+                $('#fgDiv').fadeOut();  //逻辑 添加/修改 界面
+            });
+            
+        });
+    </script>
+</head>
+<body>
+	注意事项：插入或修改数据时，字段不可以为空，如果没有插入成功提醒，说明插入的内容有问题，正常是学校或值班人员输入错误。
+	<br /> 优先级：1为特别重要-红色，2为重要-蓝色，3普通-绿色。
+	<br />Tip： 同一天同一所学校不应该出现两次。
+	<hr />
+	<input type="button" id="btnAdd" value="添加" />
+	<input type="button" id="btnReverse" value="反转" />
+	<input type="button" id="btnRemove" value="删除选中项" />
+	<table border="1" style=" text-align:center; ">
+		<thead>
+			<th width="100"><input type="checkbox" id="chkAll" /></th>
+			<th width="100">时间</th>
+			<th width="100">学校</th>
+			<th width="100">修改</th>
+		</thead>
+		<tbody id="list">
+
+		</tbody>
+	</table>
+
+	<!--隐藏层在最顶层，放在最后-->
+	<div id="bgDiv">
+		<!--隐藏层，背景遮挡层(半透明)-->
+	</div>
+	<div id="fgDiv">
+		<!--隐藏层，逻辑业务窗口层-->
+		<input type="hidden" id="hidId" /> 时间：<input type="text" id="date" />
+		<br /> 学校：<input type="text" id="school" /> <br /><input type="button"
+			id="btnSave" value="保存" />
+	</div>
+</body>

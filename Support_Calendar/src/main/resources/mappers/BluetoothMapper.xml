@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.just.demo.dao.BluetoothMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.just.demo.model.Bluetooth" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="bluetooth_brand" property="bluetoothBrand" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="getByDateSchool" resultMap="BaseResultMap">
+    select * from bluetooth where date=#{date} and school=#{school}
+  </select>
+    <select id="getByDateSchoolBrand" resultType="int">
+        select id from bluetooth where date=#{date} and school=#{school} and bluetooth_brand=#{bluetooth_brand}
+    </select>
+</mapper>

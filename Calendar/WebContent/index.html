@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no" />
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+
+<!--公共样式-->
+<link rel="stylesheet" href="h5_css/reset.css" />
+<!--主要样式-->
+<link rel="stylesheet" type="text/css" href="h5_css/simple-calendar.css">
+<link rel="stylesheet" href="h5_css/calendar.css" />
+
+<title>2018电信支撑日历</title>
+</head>
+<body>
+<div class="inner">
+	<div id='calendar' class="sc-calendar">
+		<div class="sc-header">
+			<div class="sc-title">
+				<div class="year"><span class="sc-select-year" name=""></span>年</div>
+				<div class="month">
+					<div class="arrow sc-mleft"></div>
+					<div class="monthdiv">
+						<span class="sc-select-month" name=""></span>
+					</div>
+					<div class="arrow sc-mright"></div>
+				</div>
+			</div>
+			<div class="sc-week"></div> 
+		</div>
+		<div class="sc-body">
+			<div class="sc-days"></div>
+		</div>
+	</div>
+	<div class="announcement">
+		<ul class="matter">
+		</ul>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js" ></script>
+<script type="text/javascript" src="js/simple-calendar.js"></script>
+<script type="text/javascript" src="js/hammer-2.0.8-min.js"></script>
+<script type="text/javascript">
+	var myCalendar = new SimpleCalendar('#calendar');
+	$(function(){
+		var monthCH = $('.sc-select-month').text();
+		$(".sc-mleft").click(function(){
+			myCalendar.subMonth();
+		   var year = $('.sc-select-year').text();
+		   var monthCH = $('.sc-select-month').text();
+		   var month = SimpleCalendar.prototype.languageData.months_CH.indexOf(monthCH)+1;
+	   })
+		$(".sc-mright").click(function(){
+			myCalendar.addMonth();
+			var year = $('.sc-select-year').text();
+			var monthCH = $('.sc-select-month').text();
+			var month = SimpleCalendar.prototype.languageData.months_CH.indexOf(monthCH)+1;
+		})
+	});
+	
+	//滑动切换
+	var myElement = document.getElementById('calendar');
+　　  			var hammer = new Hammer(myElement);
+	hammer.on("swipeleft", function (ev) {
+		myCalendar.addMonth();
+	});
+	hammer.on("swiperight", function (ev) {
+		myCalendar.subMonth();
+	});
+	
+	//添加标记
+	var mark;
+	var calendars = new Array();
+	getCalendar();
+	function getCalendar() {
+		$.ajax({
+			url : "http://4g.wuxi.cn/wapgetCalendar",
+			dataType : "jsonp", 
+			complete : function(data) {
+				data = data.responseJSON;
+				console.info(data);
+				/*
+				//var result = JSON.stringify(data);
+				//全局替换单引号-》双引号
+				//result.replace(\'/g, '"');
+				//双引号替换单引号
+				//String对象调用相应的方法对自身没有改变，需要声明一个新的String来存储方法返回的新的String对象
+				//result=result.replace(/\"/g,"'");
+				//console.info("result:" + result);
+				//将返回的数据分装成实体类放到calendars数组中去
+				
+				$.each(data, function(index, obj) {
+					var calendar = new Object();
+					calendar.date = obj['date'];
+					var schools_data=obj['schools'];
+					var schools = new Array();
+					//console.info(schools_data);
+					$.each(schools_data,function(index,obj){
+						var school=new Object();
+						school.scene_person=obj['scene_person'];
+						school.school=obj['scene_person'];
+						school.student_predict=obj['student_predict'];
+						school.telephone=obj['telephone'];
+						schools[index]=school;
+					});
+					calendar.schools=schools;
+					//calendar.student_predict=
+					//calendar.school = obj['school'];
+					//calendar.sceneperson = obj['scene_person'];
+					calendar.backperson = obj['back_person'];
+					calendar.backphone = obj['back_phone'];
+					//console.info(calendar.date+calendar.backperson+calendar.backphone);
+					//console.info(schools);
+					calendars[index]=calendar;
+				});
+				console.info(calendars);
+				*/
+				mark =data;
+					
+				myCalendar._defaultOptions.mark=mark;
+				myCalendar.update();
+			}
+		});
+	}
+	
+	
+		
+	//显示当天的活动在初始化mark之后
+	//初始化今天的活动
+	announceList($('.sc-today'));
+	//有标记的日期点击事件
+	$('#calendar').on("click", '.sc-selected', function() {
+		announceList($(this));
+	});
+	
+	
+	
+	//显示选择日期当天的活动
+	function announceList(v){
+		console.log(v)
+		if(v.children().hasClass('sc-mark-show')){
+			var year = $('.sc-select-year').text();
+			var monthCH = $('.sc-select-month').text();
+			var day = v.children()[1].innerText;
+			var month = SimpleCalendar.prototype.languageData.months_CH.indexOf(monthCH)+1;
+			var date = year + '-' + month + '-' + day;
+			var matterHtml='';
+			console.info(date);
+			var content = mark[date];
+			for(var i=0;i<content.length-1;i++){
+				var blue_tooth='';
+				var cookie=content[i].blue_tooth;
+				if(cookie!=""){
+					blue_tooth+="现场蓝牙配备：";
+				}
+				for(var t=0;t<cookie.length;t++){
+					console.info(cookie[0]);
+					console.info(cookie[t]);
+					cookie[t].tooth_amount;
+					blue_tooth+=cookie[t].tooth_brand+'-'+cookie[t].tooth_amount+"&nbsp;&nbsp;&nbsp";
+				}
+				console.info(blue_tooth);
+				matterHtml +='<li class="announceItem"><div><div class="fl announceImg">'
+					+'<img class=" " src="images/content.png"></div>'
+					+'<p class="announceContent">学校:'+content[i].school+'&nbsp;&nbsp;&nbsp;&nbsp;<a style="text-decoration:underline;color:#4e9fee" href="tel:'
+					+content[i].scene_phone+'">拨打现场支撑电话</a>'+'</p>'
+					+'</div><div class="announceTime">'+content[i].scene_person+' - '+content[i].scene_phone
+					+'</div><div class="announceTime">'+blue_tooth+'</div></li>';
+				
+			}
+			matterHtml +='<li class="announceItem"><div><div class="fl announceImg">'
+						+'<img class=" " src="images/content.png"></div>'+'<p class="announceContent">远程支持'
+						+'&nbsp;&nbsp;&nbsp;&nbsp;<a style="text-decoration:underline;color:#4e9fee" href="tel:'
+						+content[i].back_phone+'">拨打远程支撑电话</a>'+'</p>'
+						+'</div><div class="announceTime">'+content[content.length-1].back_person+' - '+content[content.length-1].back_phone+'</div>';
+			$('.matter').html(matterHtml);
+		}else{
+			var matterHtml='';
+			matterHtml +='<li class="announceItem"><div><p class="announceContent">当前日期暂无安排</p></div></li>';
+			$('.matter').html(matterHtml);
+		}
+	}
+	
+</script>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+</div>
+</body>
+</html>

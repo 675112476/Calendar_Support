@@ -1,0 +1,153 @@
+* {
+     font-family: "microsoft yahei";
+     font-size: 1.125rem;
+     color: #000;
+     text-align: center;
+     -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+     box-sizing: border-box;
+     margin: 0;
+}
+ table{
+     table-layout:fixed;
+     word-wrap:break-word;
+     word-break;
+     break-all;
+}
+ button{
+     cursor:pointer;
+     outline:none;
+}
+ #head {
+     margin: 1.1875rem;
+     margin-top: 1.5625rem;
+     font-family: "SimSun";
+     font-size: 2.1875rem;
+     font-weight: bold;
+}
+ #calendar_s {
+     width: 90%;
+     height: 100%;
+     margin: auto;
+     background-color: #FFFAFA;
+}
+ #calendar {
+     top: 0;
+     bottom: 0;
+     left: 0;
+}
+ html, body {
+     background: #f2f2f2;
+}
+ .calendar {
+     margin: 2.8125rem;
+     width: 28.125rem;
+     height: 21.875rem;
+     background: white;
+     box-shadow: 0rem 0.0625rem 0.0625rem rgba(0, 0, 0, .1);
+}
+ .title {
+     height: 4.375rem;
+     border-bottom: 0.0625rem solid rgba(0, 0, 0, .1);
+     position: relative;
+     text-align: center;
+}
+ #calendar-title {
+     font-size: 1.75rem;
+     text-transform: uppercase;
+     font-family: Arial, Helvetica, sans-serif;
+     padding: 0.875rem 0 0 0;
+}
+ #calendar-year {
+     font-size: 1.125rem;
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight: normal;
+}
+ #pre {
+     position: absolute;
+     top: 0.625rem;
+     left: 3.125rem;
+     background: url(../images/prev.png) no-repeat 50% 50%;
+    /*没规定大小时，图片显示 0X0*/
+     width: 4.375rem;
+     height: 3.4375rem;
+}
+ #next {
+     position: absolute;
+     top: 0.625rem;
+     right: 3.125rem;
+     background: url(../images/next.png) no-repeat 50% 50%;
+     width: 4.375rem;
+     height: 3.4375rem;
+}
+ #dateZone {
+     width: 90%;
+     height: 31.25rem;
+     margin: auto;
+}
+ .details {
+     width:8.75rem;
+     font-size: 0.9375rem;
+     text-align: left;
+}
+ .body-list tr {
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight: bold;
+     width: 100%;
+}
+ .body-list tr td {
+     font-size: 1.375rem;
+     padding: 0.9375rem;
+}
+ .b {
+     font-size: 1.25rem;
+     border: 1px solid #DDDDDD;
+     width:15.625rem;
+     display:none;
+     position: absolute;
+     background:#FFFFFF;
+}
+ .day_details{
+     font-size: 0.9375rem;
+     text-align:left;
+}
+ .bold_details{
+     color:#6ac13c;
+     width:auto;
+     font-size:0.9375rem;
+}
+ .div_td{
+     width:4.375rem;
+     font-size:0.9375rem;
+}
+ .clear{
+     clear: both;
+}
+ .green {
+     color: #6ac13c;
+}
+ .lightgrey {
+    /*浅灰色显示过去的日期*/
+     font-size: 1.5rem;
+     border: 1px solid #DDDDDD;
+     height: 6.25rem;
+     vertical-align: top;
+     width:6.25rem;
+}
+ .darkgrey {
+    /*深灰色显示将来的日期*/
+     font-size: 1.5rem;
+     border: 1px solid #DDDDDD;
+     height: 6.25rem;
+     vertical-align: top;
+     width:6.25rem;
+}
+/*日期当天用绿色背景绿色文字加以显示*/
+ .greenbox {
+     font-size: 1.5rem;
+     border: 1px solid #6ac13c;
+     background: #e9f8df;
+     vertical-align: top;
+     width:6.25rem;
+}
+ 

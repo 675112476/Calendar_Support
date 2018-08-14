@@ -1,0 +1,28 @@
+@charset "UTF-8";
+table{
+	text-align:center;
+	margin:auto;
+}
+a:hover,
+a:focus {
+  color: #2a6496;
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+table{
+	margin:10px;
+}
+#btnAdd{
+	margin-left:10px;
+}
+#btnReverse{
+	margin-left:10px;
+}
+#btnRemove{
+	margin-left:10px;
+}
