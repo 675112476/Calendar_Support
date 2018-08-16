@@ -81,44 +81,7 @@
 			complete : function(data) {
 				data = data.responseJSON;
 				console.info(data);
-				/*
-				//var result = JSON.stringify(data);
-				//全局替换单引号-》双引号
-				//result.replace(\'/g, '"');
-				//双引号替换单引号
-				//String对象调用相应的方法对自身没有改变，需要声明一个新的String来存储方法返回的新的String对象
-				//result=result.replace(/\"/g,"'");
-				//console.info("result:" + result);
-				//将返回的数据分装成实体类放到calendars数组中去
-				
-				$.each(data, function(index, obj) {
-					var calendar = new Object();
-					calendar.date = obj['date'];
-					var schools_data=obj['schools'];
-					var schools = new Array();
-					//console.info(schools_data);
-					$.each(schools_data,function(index,obj){
-						var school=new Object();
-						school.scene_person=obj['scene_person'];
-						school.school=obj['scene_person'];
-						school.student_predict=obj['student_predict'];
-						school.telephone=obj['telephone'];
-						schools[index]=school;
-					});
-					calendar.schools=schools;
-					//calendar.student_predict=
-					//calendar.school = obj['school'];
-					//calendar.sceneperson = obj['scene_person'];
-					calendar.backperson = obj['back_person'];
-					calendar.backphone = obj['back_phone'];
-					//console.info(calendar.date+calendar.backperson+calendar.backphone);
-					//console.info(schools);
-					calendars[index]=calendar;
-				});
-				console.info(calendars);
-				*/
 				mark =data;
-					
 				myCalendar._defaultOptions.mark=mark;
 				myCalendar.update();
 			}
@@ -162,13 +125,20 @@
 					blue_tooth+=cookie[t].tooth_brand+'-'+cookie[t].tooth_amount+"&nbsp;&nbsp;&nbsp";
 				}
 				console.info(blue_tooth);
-				matterHtml +='<li class="announceItem"><div><div class="fl announceImg">'
-					+'<img class=" " src="images/content.png"></div>'
-					+'<p class="announceContent">学校:'+content[i].school+'&nbsp;&nbsp;&nbsp;&nbsp;<a style="text-decoration:underline;color:#4e9fee" href="tel:'
-					+content[i].scene_phone+'">拨打现场支撑电话</a>'+'</p>'
-					+'</div><div class="announceTime">'+content[i].scene_person+' - '+content[i].scene_phone
-					+'</div><div class="announceTime">'+blue_tooth+'</div></li>';
-				
+				if(content[i].scene_person==""){
+					matterHtml +='<li class="announceItem"><div><div class="fl announceImg">'
+						+'<img class=" " src="images/content.png"></div>'
+						+'<p class="announceContent">学校:'+content[i].school+'&nbsp;&nbsp;&nbsp;&nbsp;'+'</p>'
+						+'</div><div class="announceTime">'
+						+'</div><div class="announceTime">'+blue_tooth+'</div></li>';
+				}else{
+					matterHtml +='<li class="announceItem"><div><div class="fl announceImg">'
+						+'<img class=" " src="images/content.png"></div>'
+						+'<p class="announceContent">学校:'+content[i].school+'&nbsp;&nbsp;&nbsp;&nbsp;<a style="text-decoration:underline;color:#4e9fee" href="tel:'
+						+content[i].scene_phone+'">拨打现场支撑电话</a>'+'</p>'
+						+'</div><div class="announceTime">'+content[i].scene_person+' - '+content[i].scene_phone
+						+'</div><div class="announceTime">'+blue_tooth+'</div></li>';
+				}
 			}
 			matterHtml +='<li class="announceItem"><div><div class="fl announceImg">'
 						+'<img class=" " src="images/content.png"></div>'+'<p class="announceContent">远程支持'

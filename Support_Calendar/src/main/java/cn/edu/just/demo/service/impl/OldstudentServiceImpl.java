@@ -93,7 +93,7 @@ public class OldstudentServiceImpl implements OldstudentService {
     @Override
     public String getOldstudent(HttpServletRequest request){
         String callback = request.getParameter("callback");
-        List<Oldstudent> list=oldstudentMapper.selectAll();
+        List<Oldstudent> list=oldstudentMapper.getInOrder();
         com.alibaba.fastjson.JSONArray json = new JSONArray();
         for(Oldstudent oldstudent : list){
             com.alibaba.fastjson.JSONObject jo = new com.alibaba.fastjson.JSONObject();

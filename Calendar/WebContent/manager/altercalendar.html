@@ -42,8 +42,8 @@
 			                    '<td>'+this.date+'</td>' +
 			                    '<td>'+this.school+'</td>' +
 			                    '<td>'+this.student_predict+'</td>' +
-			                    '<td>'+this.back_person+'</td>' +
 			                    '<td>'+this.scene_person+'</td>' +
+			                    '<td>'+this.back_person+'</td>' +
 			                    '<td><input type="button" id="btn_'+this.id+'" value="修改"/></td>' +
 			                    '</tr>').appendTo('#list');
 					});
@@ -134,7 +134,7 @@
                 var id = $('#hidId').val();
                 //console.info('#' + id + '>td');
                 //构造一个worker对象出来并发送ajax请求进行添加
-                if($('#date').val()==""||$('#school').val()==""||$('#student_predict').val()==""||$('#scene_person').val()==""||$('#back_person').val()==""){
+                if($('#date').val()==""||$('#school').val()==""||$('#student_predict').val()==""||$('#back_person').val()==""){
                 	alert("字段不可为空");
                 }else{
                 	var calendar={

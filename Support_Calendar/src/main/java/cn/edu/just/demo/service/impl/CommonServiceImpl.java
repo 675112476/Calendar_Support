@@ -44,7 +44,11 @@ public class CommonServiceImpl implements CommonService {
         int tar=0;//次数标识
         for(School school:schools){
             String scene_name=calendarMapper.getsceneNameByDateAndSchool(date,school.getSchoolAlias());
-            String scene_phone=workerMapper.getByName(scene_name).getPhone();
+            String scene_phone="";
+            if(scene_name.length()>0){
+                scene_phone=workerMapper.getByName(scene_name).getPhone();
+            }
+
             String student_predict=calendarMapper.getStudentPredictByDateAndSchool(date,school.getSchoolAlias());
             List<Bluetooth> bluetooths=bluetoothMapper.getByDateSchool(date,school.getSchoolAlias());
             JSONObject jsonObject=new JSONObject();
@@ -112,7 +116,11 @@ public class CommonServiceImpl implements CommonService {
         for(School school:schools){
 
             String scene_name=calendarMapper.getsceneNameByDateAndSchool(date,school.getSchoolAlias());
-            String scene_phone=workerMapper.getByName(scene_name).getPhone();
+            String scene_phone="";
+            System.out.println(scene_name.getClass().toString());
+            if(scene_name.length()>0){
+                scene_phone=workerMapper.getByName(scene_name).getPhone();
+            }
             String student_predict=calendarMapper.getStudentPredictByDateAndSchool(date,school.getSchoolAlias());
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("school",school.getName());
@@ -185,7 +193,11 @@ public class CommonServiceImpl implements CommonService {
             System.out.println("--------------------"+date+school.getSchoolAlias());
             String scene_name=calendarMapper.getsceneNameByDateAndSchool(date,school.getSchoolAlias());
             System.out.println("scene_name："+scene_name);
-            String scene_phone=workerMapper.getByName(scene_name).getPhone();
+            String scene_phone="";
+            System.out.println(scene_name.getClass().toString());
+            if(scene_name.length()>0){
+                scene_phone=workerMapper.getByName(scene_name).getPhone();
+            }
             System.out.println("scene_phone："+scene_phone);
             String student_predict=calendarMapper.getStudentPredictByDateAndSchool(date,school.getSchoolAlias());
             JSONObject jsonObject=new JSONObject();

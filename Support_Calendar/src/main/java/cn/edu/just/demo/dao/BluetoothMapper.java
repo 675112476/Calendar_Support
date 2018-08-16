@@ -8,4 +8,5 @@ import java.util.List;
 public interface BluetoothMapper extends MyMapper<Bluetooth> {
     public List<Bluetooth> getByDateSchool(String date,String school);
     public int getByDateSchoolBrand(String date,String school,String bluetooth_brand);
+    public List<Bluetooth> getInOrder();
 }

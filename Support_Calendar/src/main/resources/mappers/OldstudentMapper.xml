@@ -15,4 +15,7 @@
   <select id="getIdByDateSchool" resultType="int" >
     select id from oldstudent where date=#{date} and school=#{school}
   </select>
+  <select id="getInOrder" resultMap="BaseResultMap">
+    select * from oldstudent order  by date
+  </select>
 </mapper>

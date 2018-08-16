@@ -17,4 +17,7 @@
     <select id="getByDateSchoolBrand" resultType="int">
         select id from bluetooth where date=#{date} and school=#{school} and bluetooth_brand=#{bluetooth_brand}
     </select>
+  <select id="getInOrder" resultMap="BaseResultMap">
+    select * from bluetooth order by date
+  </select>
 </mapper>

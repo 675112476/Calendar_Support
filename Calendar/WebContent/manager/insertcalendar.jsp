@@ -37,7 +37,7 @@
 			</tr>
 			<tr>
 				<th>现场人员</th>
-				<td><input id="scene_person" name="scene_person" data-options="required:true"/>
+				<td><input id="scene_person" name="scene_person" />
 				</td>
 			</tr>
 			<tr>

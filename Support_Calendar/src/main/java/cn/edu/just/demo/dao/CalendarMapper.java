@@ -11,4 +11,5 @@ public interface CalendarMapper extends MyMapper<Calendar> {
     public String getStudentPredictByDateAndSchool (String date,String school);
     public List<Calendar> getAllByDate(String date);
     public int getIdBySchoolAndDate(String school,String date);
+    public List<Calendar> getInOrder();
 }

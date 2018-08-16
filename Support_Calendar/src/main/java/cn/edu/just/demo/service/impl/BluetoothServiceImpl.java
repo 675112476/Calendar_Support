@@ -45,7 +45,7 @@ public class BluetoothServiceImpl implements BluetoothService {
     @Override
     public String getBluetooth(HttpServletRequest request){
     String callback = request.getParameter("callback");
-    List<Bluetooth> list=bluetoothMapper.selectAll();
+    List<Bluetooth> list=bluetoothMapper.getInOrder();
     JSONArray json = new JSONArray();
         for(Bluetooth bluetooth : list){
         JSONObject jo = new JSONObject();

@@ -8,4 +8,5 @@ import java.util.List;
 public interface OldstudentMapper extends MyMapper<Oldstudent> {
     public List<String> getSchoolByDate(String date);
     public int getIdByDateSchool(String date,String school);
+    public List<Oldstudent>getInOrder();
 }

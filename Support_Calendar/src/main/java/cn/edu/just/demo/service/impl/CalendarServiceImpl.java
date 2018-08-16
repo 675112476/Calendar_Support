@@ -108,7 +108,7 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public String get_calendar(HttpServletRequest request) {
         String callback = request.getParameter("callback");
-        List<Calendar> list=calendarMapper.selectAll();
+        List<Calendar> list=calendarMapper.getInOrder();
         JSONArray datas=new JSONArray();
         for(Calendar calendar:list){
             JSONObject data=new JSONObject();

@@ -30,5 +30,7 @@
   <select id="getIdBySchoolAndDate" resultType="int">
     select id from calendar where school=#{school} and date=#{date}
   </select>
-
+  <select id="getInOrder" resultMap="BaseResultMap">
+    select * from calendar order by date
+  </select>
 </mapper>
