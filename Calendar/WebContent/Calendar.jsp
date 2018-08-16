@@ -112,6 +112,7 @@
 					console.info("result:" + result);
 					//将返回的数据分装成实体类放到calendars数组中去
 					var calendars = new Array();
+					
 					$.each(data, function(index, obj) {
 						var calendar = new Object();
 						calendar.date = obj['date'];
@@ -270,7 +271,7 @@
 					
 				}
 			});
-			getProperty();
+			
 		}
 		
 		//获取property并改变相应的颜色
@@ -282,18 +283,22 @@
 				complete : function(data) {
 					data = data.responseJSON;
 					result = JSON.stringify(data);
-					//console.info("--property:"+result);
+					console.info("--property:"+result);
 					$.each(data,function(index,obj){
 						var property=obj["property"];
 						var date=obj["date"];
 						var dates=date.split('-');
-						//console.info("--property dates:"+dates[2]+" property:"+property);
-						var carlendar_div = document.getElementById("style_"+dates[2]);
-						if(property==1){
-							carlendar_div.style.backgroundColor="#FF0000";
-						}else if(property==2){
-							carlendar_div.style.backgroundColor="#0000FF ";
+						console.info((my_month+1)+dates[1]);
+						if((my_month+1)==dates[1]){
+							console.info("--property dates:"+dates[2]+" property:"+property);
+							var carlendar_div = document.getElementById("style_"+dates[2]);
+							if(property==1){
+								carlendar_div.style.backgroundColor="#FF0000";
+							}else if(property==2){
+								carlendar_div.style.backgroundColor="#0000FF ";
+							}
 						}
+						
 					});
 				}
 			});
@@ -307,6 +312,7 @@
 				mouseOverDiv += "<div class='b' id="+i+"></div>";
 				mouseOver.innerHTML = mouseOverDiv;
 			}
+			getProperty();
 		}
 		/*
 		//给div赋值
